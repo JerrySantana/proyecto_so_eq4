@@ -1,85 +1,96 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ListaDinamica {
     private Nodo primerNodo;
     private Nodo ultimoNodo;
-    private Nodo[] nodos;
 
-    int tamanio;
-
-    public ListaDinamica(int tamanio) {
+    public ListaDinamica() {
         this.primerNodo = null;
         this.ultimoNodo = null;
-        this.nodos = new Nodo[tamanio];
-    }
-
-    public Nodo getNodo(int index) {
-        if (this.nodos[index] != null) {
-            if (index < this.tamanio) {
-                if (index > 0) {
-                    return this.nodos[index - 1];
-                } else if (index == this.tamanio - 1) {
-                    return this.getUltimoNodo();
-                } else {
-                    return this.getPrimerNodo();
-                }
-            }
-        }
-        return new Nodo(new Proceso("aux", "aux", 1, 1));
     }
 
     public Nodo getPrimerNodo() { return primerNodo; }
 
     public Nodo getUltimoNodo() { return ultimoNodo; }
 
-    public int getTamanio() { return tamanio; }
-
-    public void aumentar() { this.tamanio++; }
-
-    public void disminuir() { this.tamanio--; }
-
-    public void insertarNodo(Nodo nodo) {
-        assert nodo != null;
-        if (this.getTamanio() > 0) {
-            this.ultimoNodo.setSiguiente(nodo);
-            this.nodos[this.tamanio + 1] = nodo;
+    public void insertarProceso(Proceso proceso) {
+        Nodo nuevoNodo = new Nodo(proceso);
+        if (!this.listaVacia()) {
+            this.ultimoNodo.setSiguiente(nuevoNodo);
         } else {
-            this.primerNodo = nodo;
+            this.primerNodo = nuevoNodo;
         }
-        this.ultimoNodo = nodo;
-        this.aumentar();
-        //this.mostrar();
+        this.ultimoNodo = nuevoNodo;
+        this.mostrar();
     }
 
-    public Nodo eliminarNodo(int index) {
-        Nodo nodo = null;
-        if (index > 0) {
-            nodo = this.nodos[index];
-            if (this.nodos[index].getSiguiente() != this.getUltimoNodo()) {
-                this.nodos[index-1].setSiguiente(this.nodos[index].getSiguiente());
-                this.nodos[index].setSiguiente(null);
-                for (int i = index - 1; i < (this.tamanio - 1); i--) {
-                    if (i != this.tamanio - 2) {
-                        this.nodos[i] = this.nodos[i + 1];
-                    } else {
-                        this.nodos[i] = null;
-                    }
-                }
-            } else {
-                this.nodos[index - 1].setSiguiente(null);
-                this.ultimoNodo = this.nodos[index - 1];
-
-            }
-            this.disminuir();
+    public Proceso eliminarProceso() {
+        if (listaVacia()) {
+            return null;
         }
-        return nodo;
+        Proceso proceso = this.primerNodo.getProceso();
+        this.primerNodo = this.primerNodo.getSiguiente();
+        if (this.primerNodo == null) {
+            this.ultimoNodo = null;
+        }
+        System.out.println("Se elimino el proceso " + proceso.toString());
+        this.mostrar();
+        return proceso;
+    }
+
+    private boolean listaVacia() {
+        return this.primerNodo == null;
+    }
+
+    public Proceso primerNodo() {
+        if (this.primerNodo == null) {
+            return null;
+        }
+        return this.primerNodo.getProceso();
     }
 
     public void mostrar() {
-        if (this.tamanio > 0) {
-            for (int i = 0; i < (this.tamanio - 1); i++) {
-                System.out.print(getNodo(i).toString() + " -> ");
-            }
-        } else {
-            System.out.println("La lista se encuentra vacia.");
+        if (this.listaVacia()) {
+            System.out.println("No hay procesos en la lista, se encuentra vacía.");
+            return;
+        }
+        Nodo nodo = this.primerNodo;
+        System.out.println("Procesos en la lista: ");
+        while (nodo != null) {
+            System.out.println(nodo.getProceso());
+            nodo = nodo.getSiguiente();
+        }
+    }
+
+    public void ordenarLista() {
+        if (this.listaVacia()) {
+            System.out.println("No hay procesos en la lista.");
+            return;
+        }
+        Nodo nodo = this.primerNodo;
+        List<Proceso> auxiliar = new ArrayList<>();
+
+        while (nodo != null) {
+            auxiliar.add(nodo.getProceso());
+            nodo = nodo.getSiguiente();
+        }
+
+        auxiliar.sort((p1, p2) -> {
+                if (p1.getPrioridadProceso() != p2.getPrioridadProceso()) {
+                    return p2.getPrioridadProceso() - p1.getPrioridadProceso();
+                } else {
+                    return p1.getTiempoLlegada() - p2.getTiempoLlegada();
+                }
+        });
+
+        this.primerNodo = null;
+        this.ultimoNodo = null;
+
+        for (Proceso proceso : auxiliar) {
+            this.insertarProceso(proceso);
         }
     }
 }

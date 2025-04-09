@@ -1,38 +1,35 @@
 
 public static void main(String[] args) {
-    System.out.println("Hello World");
-    ListaDinamica lista = new ListaDinamica(100);
-    Proceso proceso1 = new Proceso("1", "A", 1, 1);
-    Proceso proceso2 = new Proceso("2", "B", 1, 1);
-    Proceso proceso3 = new Proceso("3", "C", 1, 1);
-    Proceso proceso4 = new Proceso("4", "D", 1, 1);
-    Nodo nodo1 = new Nodo(proceso1);
-    lista.insertarNodo(nodo1);
-    Nodo nodo2 = new Nodo(proceso2);
-    lista.insertarNodo(nodo2);
-    Nodo nodo3 = new Nodo(proceso3);
-    lista.insertarNodo(nodo3);
-    Nodo nodo4 = new Nodo(proceso4);
-    lista.insertarNodo(nodo4);
-    Nodo nodo5 = new Nodo(proceso3);
-    lista.insertarNodo(nodo5);
-    Nodo nodo6 = new Nodo(proceso2);
-    lista.insertarNodo(nodo6);
-    Nodo nodo7 = new Nodo(proceso1);
-    lista.insertarNodo(nodo7);
-    Nodo nodo8 = new Nodo(proceso3);
-    lista.insertarNodo(nodo8);
-    Nodo nodo9 = new Nodo(proceso4);
-    lista.insertarNodo(nodo9);
-    Nodo nodo10 = new Nodo(proceso2);
-    lista.insertarNodo(nodo10);
+    ListaDinamica lista = new ListaDinamica();
+    Proceso proceso1 = new Proceso("1", "A", 1, 4, 1);
+    Proceso proceso2 = new Proceso("2", "B", 1, 3, 5);
+    Proceso proceso3 = new Proceso("3", "C", 1, 1, 2);
+    Proceso proceso4 = new Proceso("4", "D", 1, 6, 4);
+    Proceso proceso5 = new Proceso("5", "E", 1, 2, 2);
+    Proceso proceso6 = new Proceso("6", "F", 1, 5, 4);
+    Proceso proceso7 = new Proceso("7", "G", 1, 10, 3);
+    Proceso proceso8 = new Proceso("8", "H", 1, 3, 10);
 
-    lista.mostrar();
-
-    lista.eliminarNodo(4);
-
+    System.out.println("Iniciando inserción de procesos.");
+    lista.insertarProceso(proceso1);
+    lista.insertarProceso(proceso2);
+    lista.insertarProceso(proceso3);
+    lista.insertarProceso(proceso4);
+    lista.insertarProceso(proceso5);
+    lista.insertarProceso(proceso6);
+    lista.insertarProceso(proceso7);
+    lista.insertarProceso(proceso8);
+    System.out.println("=====================================");
+    System.out.println("Ordenando procesos.");
+    lista.ordenarLista();
+    System.out.println("Lista de procesos ordenada.");
+    System.out.println("=====================================");
+    System.out.println("Eliminando un proceso.");
+    System.out.println(lista.eliminarProceso().toString());
+    System.out.println("=====================================");
+    System.out.println("Eliminando un proceso.");
+    System.out.println(lista.eliminarProceso().toString());
     System.out.println("=====================================");
 
-    lista.mostrar();
 
 }
