@@ -1,18 +1,18 @@
 public class Proceso {
-    String idProceso;
-    String NombreProceso;
-    int tamanioProceso;
-    int tiempoRequerido;
-    int prioridadProceso;
+    private final String idProceso;
+    private final String NombreProceso;
+    private final int tamanioProceso;
+    private int tiempoRequerido;
+    private final int prioridadProceso;
+    private final int tiempoLlegada;
 
-    public Proceso() {}
-
-    public Proceso(String idProceso, String NombreProceso, int tiempoRequerido, int prioridadProceso) {
+    public Proceso(String idProceso, String NombreProceso, int tiempoRequerido, int prioridadProceso, int tiempoLlegada) {
         this.idProceso = idProceso;
         this.NombreProceso = NombreProceso;
         this.tamanioProceso = tiempoRequerido;
         this.tiempoRequerido = tiempoRequerido;
         this.prioridadProceso = prioridadProceso;
+        this.tiempoLlegada = tiempoLlegada;
     }
 
     public String getIdProceso() { return idProceso; }
@@ -25,4 +25,10 @@ public class Proceso {
 
     public int getPrioridadProceso() { return prioridadProceso; }
 
+    public int getTiempoLlegada() { return tiempoLlegada; }
+
+    @Override
+    public String toString() {
+        return "ID proceso: "+this.getIdProceso()+" - Nombre proceso: "+this.getNombreProceso()+" - Prioridad: "+this.getPrioridadProceso()+" - Llegada: "+this.getTiempoLlegada();
+    }
 }
