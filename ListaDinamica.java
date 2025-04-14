@@ -1,30 +1,55 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ListaDinamica {
     private Nodo primerNodo;
     private Nodo ultimoNodo;
+    private int tamanioMemoria = 1024;
+    final boolean listosEjecucion;
 
-    public ListaDinamica() {
+    public ListaDinamica(boolean listaEjecucion) {
         this.primerNodo = null;
         this.ultimoNodo = null;
+        this.listosEjecucion = listaEjecucion;
     }
 
     public Nodo getPrimerNodo() { return primerNodo; }
 
     public Nodo getUltimoNodo() { return ultimoNodo; }
 
-    public void insertarProceso(Proceso proceso) {
+    public int getTamanioMemoria() { return tamanioMemoria; }
+
+    private boolean disminuirMemoria(int tamanioProceso) {
+        if (tamanioMemoria >= tamanioProceso ) {
+            this.tamanioMemoria -= tamanioProceso;
+            System.out.println("La memoria disponible disminuyo. Memoria: "+getTamanioMemoria()+" [kB]");
+            return true;
+        } else {
+            System.out.println("No hay memoria suficiente.");
+            return false;
+        }
+    }
+
+    private void liberarMemoria(int tamanioProceso) {
+        this.tamanioMemoria += tamanioProceso;
+        System.out.println("Se liberó memoria. Memoria: "+getTamanioMemoria()+" [kB]");
+    }
+
+    public boolean insertarProceso(Proceso proceso) {
         Nodo nuevoNodo = new Nodo(proceso);
+        if (listosEjecucion) {
+            if (!disminuirMemoria(proceso.getTamanioProceso())) {
+                return false;
+            }
+        }
         if (!this.listaVacia()) {
             this.ultimoNodo.setSiguiente(nuevoNodo);
         } else {
             this.primerNodo = nuevoNodo;
         }
         this.ultimoNodo = nuevoNodo;
-        this.mostrar();
+        mostrar();
+        return true;
     }
 
     public Proceso eliminarProceso() {
@@ -37,7 +62,10 @@ public class ListaDinamica {
             this.ultimoNodo = null;
         }
         System.out.println("Se elimino el proceso " + proceso.toString());
-        this.mostrar();
+        if (listosEjecucion) {
+            liberarMemoria(proceso.getTamanioProceso());
+        }
+        mostrar();
         return proceso;
     }
 
@@ -53,20 +81,21 @@ public class ListaDinamica {
     }
 
     public void mostrar() {
-        if (this.listaVacia()) {
+        if (listaVacia()) {
             System.out.println("No hay procesos en la lista, se encuentra vacía.");
             return;
         }
         Nodo nodo = this.primerNodo;
-        System.out.println("Procesos en la lista: ");
+        System.out.println("Estado actual de la lista: ");
         while (nodo != null) {
             System.out.println(nodo.getProceso());
             nodo = nodo.getSiguiente();
         }
+        System.out.println("==================================");
     }
 
     public void ordenarLista() {
-        if (this.listaVacia()) {
+        if (listaVacia()) {
             System.out.println("No hay procesos en la lista.");
             return;
         }
@@ -88,9 +117,11 @@ public class ListaDinamica {
 
         this.primerNodo = null;
         this.ultimoNodo = null;
+        this.tamanioMemoria = 1024;
+        System.out.println("Se liberó la memoria para ordenar la lista.");
 
         for (Proceso proceso : auxiliar) {
-            this.insertarProceso(proceso);
+            insertarProceso(proceso);
         }
     }
 }
