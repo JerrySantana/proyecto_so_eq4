@@ -4,13 +4,18 @@ import java.util.List;
 public class ListaDinamica {
     private Nodo primerNodo;
     private Nodo ultimoNodo;
-    private int tamanioMemoria = 1024;
+    private int tamanioMemoria;
     final boolean listosEjecucion;
 
     public ListaDinamica(boolean listaEjecucion) {
         this.primerNodo = null;
         this.ultimoNodo = null;
         this.listosEjecucion = listaEjecucion;
+        if (listosEjecucion) {
+            tamanioMemoria = 1024;
+        } else {
+            tamanioMemoria = 0;
+        }
     }
 
     public Nodo getPrimerNodo() { return primerNodo; }
