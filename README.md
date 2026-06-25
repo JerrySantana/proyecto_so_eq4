@@ -47,4 +47,4 @@ The application logs every event in the simulation lifecycle:
 This simulator was developed as part of the **Operating Systems** coursework in the **Computer Engineering** program at **UNAM**. It serves as a proof of competence in **low-level logic implementation, concurrency simulation, and algorithmic optimization** in Java.
 
 ---
-*Developed by Gerardo Gabriel Santana Amezcua.*
+*Developed by Gerardo Santana.*
